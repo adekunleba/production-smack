@@ -25,8 +25,10 @@ class UserRegistryActor extends Actor with ActorLogging {
 
   def receive: Receive = {
     case GetUsers =>
+
       sender() ! Users(users.toSeq)
     case CreateUser(user) =>
+
       users += user
       sender() ! ActionPerformed(s"User ${user.name} created.")
     case GetUser(name) =>
