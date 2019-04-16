@@ -10,3 +10,15 @@ Thus, there are multiple data flows that are continously coming in and being pro
 AIM - Is to learn as much about building such stacks, integrating diverse algorithms for data processing and learn the scala functional paradigm on a production like
 project.
 
+### TODO
+Create a general operation trait for the various servers.
+
+//We are using Type class to handle this.
+Operations include:
+
+process
+getData
+extractData
+checkbackpressure
+persist
+persistLater
