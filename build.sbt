@@ -1,5 +1,5 @@
 name := "Prod Smack"
-organization in ThisBuild := "com.fastdata"
+organization in ThisBuild := "com.fastdatacommon"
 scalaVersion in ThisBuild   := "2.12.7"
 
 
@@ -26,19 +26,19 @@ lazy val common = project
 
 
 lazy val settings =
-  commonSettings ++ wartremoverSettings
+  commonSettings //++ wartremoverSettings
 
 //COmpiler Options as Sequence passed to commonSettings
 lazy val compilerOptions = Seq(
   "-unchecked",
   "-feature",
+  "-Xfatal-warnings",
   "-language:existentials",
   "-language:higherKinds",
   "-language:implicitConversions",
   "-language:postfixOps",
   "-deprecation",
-  "-encoding",
-  "-uft8"
+  "-encoding", "utf8"
 )
 
 
@@ -52,9 +52,9 @@ lazy val commonSettings = Seq (
     )
   )
 
-lazy val wartremoverSettings = Seq(
-  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(Wart.Throw)
-)
+//lazy val wartremoverSettings = Seq(
+//  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(Wart.Throw)
+//)
 
 
 lazy val commonDependencies = Seq(

@@ -22,3 +22,15 @@ extractData
 checkbackpressure
 persist
 persistLater
+
+
+Style guide for the project at [here](http://twitter.github.io/effectivescala/)
+and [this](https://docs.scala-lang.org/style/) - main scala style guide
+
+Make reference to collection document during the project, it can be found
+[here](https://www.scala-lang.org/docu/files/collections-api/collections.html)
+
+
+Refer [here](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html) and
+[here](http://www.scala-lang.org/docu/files/collections-api/collections_40.html)
+for scala performance evaluation
