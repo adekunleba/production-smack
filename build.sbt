@@ -13,7 +13,8 @@ lazy val global = project
   .in(file("."))
   .settings(settings)
   .aggregate(
-    common
+    common,
+    akkaserver
   )
 //TO Aggregate with global
 
@@ -22,6 +23,15 @@ lazy val common = project
     name := "common",
     settings,
     libraryDependencies ++= commonDependencies
+  )
+
+
+lazy val akkaserver = project
+  .settings(
+    name := "akkaserver",
+    settings,
+    libraryDependencies ++= Dependencies.akkaDependencies
+      ++ commonDependencies
   )
 
 
@@ -56,13 +66,18 @@ lazy val commonSettings = Seq (
 //  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(Wart.Throw)
 //)
 
-
+/**
+  * Common Dependencies should be added to all project wide.
+  */
 lazy val commonDependencies = Seq(
-  "com.typesafe.akka" %% "akka-http-xml"        % akkaHttpVersion,
-  "com.typesafe.akka" %% "akka-stream"          % akkaVersion,
 
   "com.typesafe.akka" %% "akka-http-testkit"    % akkaHttpVersion % Test,
   "com.typesafe.akka" %% "akka-testkit"         % akkaVersion     % Test,
   "com.typesafe.akka" %% "akka-stream-testkit"  % akkaVersion     % Test,
-  "org.scalatest"     %% "scalatest"            % "3.0.5"         % Test
+  "org.scalatest"     %% "scalatest"            % "3.0.5"         % Test,
+
+  //logging
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
+  "ch.qos.logback"             %  "logback-classic"             % "1.2.3",
+  "com.typesafe"                % "config"        % "1.3.3",
 )
