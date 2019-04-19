@@ -34,3 +34,21 @@ Make reference to collection document during the project, it can be found
 Refer [here](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html) and
 [here](http://www.scala-lang.org/docu/files/collections-api/collections_40.html)
 for scala performance evaluation
+
+
+Some Applications
+Real-time calculation
+Time window analysis
+Application log analysis
+Project risk management
+Intelligent prediction
+Real-time recommendation
+
+
+
+#### LESSON LEARNT
+To run a test on a particular project in a multi module sbt project it is importatant
+to switch to the module in your interactive sbt shell with `project projectname`
+Then you can run your test with `test:testOnly *TestSuit` and for continous
+testing with code changes add `~test:testOnly *TestSuit`
+
