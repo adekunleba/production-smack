@@ -8,11 +8,30 @@ class AkkaTwitterStreamerTestSuit extends WordSpec with Matchers {
 
   "A new Akka Stream server" can {
 
-    "login to server" should {
+    "loginStream to server" should {
       "load configuration from resource file " in {
-        //AkkaTwitterStreamer.login("twitter") shouldBe 'right
-        AkkaTwitterStreamer.login("twitterFake") shouldBe 'left
-        AkkaTwitterStreamer.login("someBadTweet") shouldBe 'left
+        //AkkaTwitterStreamer.loginStream("twitter") shouldBe 'right
+        AkkaTwitterStreamer.loginStream("twitterFake") shouldBe 'left
+        AkkaTwitterStreamer.loginStream("someBadTweet") shouldBe 'left
+      }
+
+      "set up a listener tweet streamer " in {
+        val loginCredentials = AkkaTwitterStreamer.loginStream("twitter")
+        val result: Boolean = loginCredentials match {
+          case Right(v) => AkkaTwitterStreamer.listen(v, AkkaTwitterStreamer.listeners)
+          case Left(_) => false
+        }
+        result shouldBe true
+      }
+    }
+
+    "Twitter Stream with akka" should {
+      "connect to a Source of Incoming Tweets and print" in {
+        val loginCredentials = AkkaTwitterStreamer.loginStream("twitter")
+        val result: Boolean = loginCredentials match {
+          case Right(v) => TweetActorPublisher.call()
+          case Left(_) => false
+        }
       }
     }
   }
