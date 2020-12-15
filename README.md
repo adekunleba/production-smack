@@ -23,6 +23,8 @@ checkbackpressure
 persist
 persistLater
 
+A typical workflow diagram can be found [here](https://github.com/adekunleba/production-smack/issues/1#issuecomment-483330646)
+It covers how the applications that makes up the smack framework interacts.
 
 Style guide for the project at [here](http://twitter.github.io/effectivescala/)
 and [this](https://docs.scala-lang.org/style/) - main scala style guide
