@@ -46,6 +46,8 @@ object Settings {
 
   lazy val kafkaSettings = Seq()
 
+  lazy val exampleProjectSettings = Seq()
+
   // Scalafmt plugin
   import org.scalafmt.sbt.ScalafmtPlugin.autoImport._
   lazy val formatting = Seq(
