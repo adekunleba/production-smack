@@ -1,21 +1,24 @@
 package com.babs.denegee.api.utils
 
-import com.babs.denegee.config.CommonSettings
 import com.babs.denegee.reflect.{Alias, DoNotScan}
 import org.reflections.Reflections
 import org.reflections.util.ConfigurationBuilder
 
 import scala.collection.mutable
 import scala.collection.JavaConverters._
+import scala.util.Try
+import cats.syntax.all._
+import com.babs.denegee.common.config.CommonSettings
 
 /**
-  * Defin
-  *
+  * Define a class to resolve subtypes that are marked with `Alias` annotation.
+  * The class search the classpath using reflection and look for packages that are
+  * annotated with Alias and belong to a subtype of T
   * @tparam T
   */
 class ClassAliasResolver[T](subTypeOf: Class[T]) {
 
-  import com.babs.denegee.config.CommonSettingsImplicits._
+  import com.babs.denegee.common.config.CommonSettingsImplicits._
 
   private val aliasToClassCache = mutable.HashMap.empty[String, Class[_ <: T]]
 
@@ -25,7 +28,8 @@ class ClassAliasResolver[T](subTypeOf: Class[T]) {
     * a configuration file on start of application.
     */
   private[utils] val commonConfig = CommonSettings.applicationConfig
-  private[utils] val packagesToScan: List[String] = "com.babs.denegee" +: commonConfig
+  private[utils] val packagesToScan
+    : List[String] = "com.babs.denegee" +: commonConfig
     .getOptionalStrList("scan-packages")
     .getOrElse(List.empty)
 
@@ -54,7 +58,7 @@ class ClassAliasResolver[T](subTypeOf: Class[T]) {
     .filter(_.isAnnotationPresent(classOf[Alias]))
     .foreach({ clazz =>
       val aliasObject: Alias = clazz.getAnnotation(classOf[Alias])
-      val alias              = aliasObject.value().toUpperCase()
+      val alias = aliasObject.value().toUpperCase()
       if (!aliasToClassCache.contains(alias)) {
         aliasToClassCache.put(alias, clazz)
       }
@@ -65,6 +69,18 @@ class ClassAliasResolver[T](subTypeOf: Class[T]) {
       .get(possibleAlias.toUpperCase)
       .map(_.getName)
       .getOrElse(possibleAlias)
+
+  /**
+    * Resolve be creating class from alias or class name
+    * @param aliasOrClass
+    * @return
+    */
+  def resolveClass(aliasOrClass: String): Option[Class[_ <: T]] =
+    if (aliasToClassCache.contains(aliasOrClass.toUpperCase)) {
+      aliasToClassCache.get(aliasOrClass.toUpperCase)
+    } else {
+      Try(Class.forName(aliasOrClass).asSubclass(subTypeOf)).toOption
+    }
 
   /**
     * Get the package map in the immutable format

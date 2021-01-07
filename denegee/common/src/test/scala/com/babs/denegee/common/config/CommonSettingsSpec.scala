@@ -1,5 +1,4 @@
-package com.babs.denegee
-package config
+package com.babs.denegee.common.config
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike

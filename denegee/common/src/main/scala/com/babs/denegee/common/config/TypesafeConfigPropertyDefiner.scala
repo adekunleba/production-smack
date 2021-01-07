@@ -1,5 +1,4 @@
-package com.babs.denegee
-package config
+package com.babs.denegee.common.config
 
 import ch.qos.logback.core.PropertyDefinerBase
 import com.typesafe.config.ConfigFactory

@@ -1,5 +1,4 @@
-package com.babs.denegee
-package config
+package com.babs.denegee.common.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import cats.syntax.all._

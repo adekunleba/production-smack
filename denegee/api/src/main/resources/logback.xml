@@ -9,10 +9,10 @@
         </encoder>
     </appender>
 
-    <define name="LOG_PATH" class="com.babs.denegee.config.TypesafeConfigPropertyDefiner">
+    <define name="LOG_PATH" class="com.babs.denegee.common.config.TypesafeConfigPropertyDefiner">
         <propertyName>common.log.path</propertyName>
     </define>
-    <define name="LOG_NAME" class="com.babs.denegee.config.TypesafeConfigPropertyDefiner">
+    <define name="LOG_NAME" class="com.babs.denegee.common.config.TypesafeConfigPropertyDefiner">
         <propertyName>common.log.name</propertyName>
     </define>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -30,7 +30,7 @@
         </encoder>
     </appender>
 
-    <define name="LOG_LEVEL" class="com.babs.denegee.config.TypesafeConfigPropertyDefiner">
+    <define name="LOG_LEVEL" class="com.babs.denegee.common.config.TypesafeConfigPropertyDefiner">
         <propertyName>common.log.level</propertyName>
     </define>
     <root level="${LOG_LEVEL}">

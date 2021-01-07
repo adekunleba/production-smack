@@ -2,7 +2,7 @@ package com.babs.denegee
 package cli
 
 import com.babs.denegee.cli.Game.Game
-import com.babs.denegee.config.CommonSettings
+import com.babs.denegee.common.config.CommonSettings
 
 /**
   * Type of game
@@ -36,8 +36,8 @@ final case class Params(player: String, game: Game, age: Option[Int])
 object CommandLineParser {
   private[this] lazy val commonSettings = CommonSettings
 
-  private[this] implicit val entityRead: scopt.Read[Game.Value] =
-    scopt.Read.reads(Game withName _)
+  implicit private[this] val entityRead: scopt.Read[Game.Value] =
+    scopt.Read.reads(Game.withName(_))
 
   private[this] val parser = new scopt.OptionParser[Config]("com.babs.denegee") {
     head(commonSettings.name)

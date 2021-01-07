@@ -16,6 +16,7 @@ object Dependencies {
     val config       = "1.3.3"
     val circe        = "0.9.3"
     val catCore      = "2.2.0"
+    val googleGson   = "2.8.6"
     val logback      = "1.2.3"
     val prometheus   = "0.5.0"
     val reflection   = "0.9.12"
@@ -65,9 +66,14 @@ object Dependencies {
   )
 
   lazy val apiDependencies = commonDependencies ++ Seq(
-    Name.typesafe     %% "akka-actor-typed" % Version.akka,
-    Name.typesafe     %% "akka-stream"      % Version.akka,
-    "org.reflections" % "reflections"       % Version.reflection
+    Name.typesafe          %% "akka-actor-typed" % Version.akka,
+    Name.typesafe          %% "akka-stream"      % Version.akka,
+    Name.circe             %% "circe-core"       % Version.circe,
+    Name.circe             %% "circe-generic"    % Version.circe,
+    Name.circe             %% "circe-parser"     % Version.circe,
+    Name.circe             %% "circe-java8"      % Version.circe,
+    "com.google.code.gson" % "gson"              % Version.googleGson,
+    "org.reflections"      % "reflections"       % Version.reflection
   )
 
 }
