@@ -2,7 +2,12 @@ package com.babs.denegee.http
 package route
 
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import akka.http.scaladsl.server.Directives.{complete, get, path, pathEndOrSingleSlash}
+import akka.http.scaladsl.server.Directives.{
+  complete,
+  get,
+  path,
+  pathEndOrSingleSlash
+}
 import akka.http.scaladsl.server.Route
 
 // scalastyle:off underscore.import
@@ -27,7 +32,9 @@ trait EnvRoute {
   private[this] def env =
     pathEndOrSingleSlash {
       get {
-        complete(HttpEntity(ContentTypes.`application/json`, System.getenv().asScala.asJson.noSpaces))
+        complete(
+          HttpEntity(ContentTypes.`application/json`,
+                     System.getenv().asScala.asJson.noSpaces))
       }
     }
 

@@ -12,7 +12,7 @@ final class AppSettingsSpec
   val appSettings = AppSettings(system)
 
   object ConfigTest {
-    private[this] val appConfig    = system.settings.config.getConfig("app")
+    private[this] val appConfig = system.settings.config.getConfig("app")
     private[this] val dockerConfig = appConfig.getConfig("docker")
 
     val dockerPort: Int = dockerConfig.getInt("port")

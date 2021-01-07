@@ -9,7 +9,8 @@ import com.babs.denegee.actor.SkeletonActor.RequestMessage
 
 object SkeletonActorLogSpec {
   val testSystem: ActorSystem = {
-    val config = ConfigFactory.parseString("""
+    val config = ConfigFactory.parseString(
+      """
       akka.loglevel = "DEBUG"
       akka.loggers = ["akka.testkit.TestEventListener"]
       """)
@@ -24,7 +25,8 @@ final class SkeletonActorLogSpec
 
   "skeleton actor" must {
     "log debug when receives a Request message" in {
-      val skeletonActorRef = system.actorOf(SkeletonActor.props, "skeleton-test-1")
+      val skeletonActorRef =
+        system.actorOf(SkeletonActor.props, "skeleton-test-1")
 
       EventFilter
         .debug(message = "message: myMessage", occurrences = 1)
@@ -33,7 +35,8 @@ final class SkeletonActorLogSpec
         }
     }
     "log error when receives an invalid message" in {
-      val skeletonActorRef = system.actorOf(SkeletonActor.props, "skeleton-test-2")
+      val skeletonActorRef =
+        system.actorOf(SkeletonActor.props, "skeleton-test-2")
 
       EventFilter
         .error(message = "invalid message", occurrences = 1)

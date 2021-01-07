@@ -19,7 +19,9 @@ object Game extends Enumeration {
   * @param game   game [[Game]]
   * @param age    age
   */
-final case class Config(player: String = "", game: Game = Game.Invalid, age: Int = -1)
+final case class Config(player: String = "",
+                        game: Game = Game.Invalid,
+                        age: Int = -1)
 
 /**
   * Application parameters
@@ -39,23 +41,24 @@ object CommandLineParser {
   implicit private[this] val entityRead: scopt.Read[Game.Value] =
     scopt.Read.reads(Game.withName(_))
 
-  private[this] val parser = new scopt.OptionParser[Config]("com.babs.denegee") {
-    head(commonSettings.name)
+  private[this] val parser =
+    new scopt.OptionParser[Config]("com.babs.denegee") {
+      head(commonSettings.name)
 
-    opt[String]('p', "player")
-      .required()
-      .action((x, c) => c.copy(player = x))
-      .text("player required")
+      opt[String]('p', "player")
+        .required()
+        .action((x, c) => c.copy(player = x))
+        .text("player required")
 
-    opt[Game]('g', "game")
-      .required()
-      .action((x, c) => c.copy(game = x))
-      .text("game required")
+      opt[Game]('g', "game")
+        .required()
+        .action((x, c) => c.copy(game = x))
+        .text("game required")
 
-    opt[Int]('a', "age")
-      .action((x, c) => c.copy(age = x))
-      .text("optional age")
-  }
+      opt[Int]('a', "age")
+        .action((x, c) => c.copy(age = x))
+        .text("optional age")
+    }
 
   protected[cli] def parseAge(age: Int): Option[Int] = age match {
     case value if value < 0 => None

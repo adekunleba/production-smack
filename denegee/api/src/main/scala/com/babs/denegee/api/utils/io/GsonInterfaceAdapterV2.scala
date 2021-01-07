@@ -93,6 +93,9 @@ class InterfaceAdapterV2[R](
       .flatMap({ typeOverride =>
         resolveObjectInstance(typeOverride)
           .orElse {
+            logger.warn(
+              s"Couldn't not resolve object instancee, trying to recreate it using ${typeOverride.getSimpleName}"
+            )
             Option(gson.getAdapter(TypeToken.get(typeOverride))).map({ custom =>
               readJson(jsonElement, jsonReader, custom)
             })
@@ -118,11 +121,13 @@ class InterfaceAdapterV2[R](
   private def resolveObjectInstance[X](typeOverride: Class[X]): Option[X] =
     Option(typeOverride)
       .filter(_.getSimpleName.endsWith("$"))
-      .flatMap { realType =>
+      .flatMap({ realType =>
+        logger.info(
+          s"field in realtype is ${realType.getFields.map(_.getName)}")
         Try(
           realType.getField("MODULE$").get(realType).asInstanceOf[X]
         ).toOption
-      }
+      })
 
   private def readJson[X](json: JsonElement,
                           jsonReader: JsonReader,

@@ -13,7 +13,7 @@ trait Web extends Routes {
   def bindAndHandleHttp(onStart: => Unit): Unit = {
 
     implicit val _ = actorSystem.dispatcher
-    val log        = Logging(actorSystem, getClass.getName)
+    val log = Logging(actorSystem, getClass.getName)
     val httpConfig = AppSettings(actorSystem).Http
 
     Http().bindAndHandle(routes, httpConfig.host, httpConfig.port).onComplete {
@@ -23,7 +23,9 @@ trait Web extends Routes {
         startApp()
         shutdownHttp(serverBinding)
       case Failure(error) =>
-        log.error(error, s"failed to bind to [${httpConfig.host}:${httpConfig.port}]: $error")
+        log.error(
+          error,
+          s"failed to bind to [${httpConfig.host}:${httpConfig.port}]: $error")
         shutdown(failed = true)
     }
 
@@ -53,7 +55,7 @@ trait Web extends Routes {
       materializer.shutdown()
       actorSystem.terminate().onComplete {
         case Success(_) if !failed => sys.exit()
-        case _ => sys.exit(-1)
+        case _                     => sys.exit(-1)
       }
     }
   }
