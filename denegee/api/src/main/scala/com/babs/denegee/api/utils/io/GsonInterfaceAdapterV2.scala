@@ -9,8 +9,6 @@ import com.google.gson.{
   GsonBuilder,
   JsonElement,
   JsonNull,
-  JsonObject,
-  JsonPrimitive,
   TypeAdapter,
   TypeAdapterFactory
 }
@@ -55,6 +53,12 @@ class InterfaceAdapterV2[R](
       case Some(x) =>
         logger.info("Value is optional")
         val jsonTreeWriter = mkTreeWriter(out)
+
+        /**
+          * From what I read about getAdapter and GetDelegateAdapter,
+          * One should be able to use `gson.getDelegateAdapter(factory, TypeToken.get(clazz(x))
+          * here IMO`
+          */
         gson.getAdapter(clazz(x)).write(jsonTreeWriter, x)
         enrichWithTypeOverride(jsonTreeWriter.get(), x)
       case _ =>
@@ -146,6 +150,13 @@ class InterfaceAdapterV2[R](
     jsonTreeWriter
   }
 
+  /**
+    * Enrich json object by adding a new property to it
+    * @param jsonValue
+    * @param value
+    * @tparam X
+    * @return
+    */
   private def enrichWithTypeOverride[X](jsonValue: JsonElement,
                                         value: X): JsonElement =
     Option(jsonValue)
