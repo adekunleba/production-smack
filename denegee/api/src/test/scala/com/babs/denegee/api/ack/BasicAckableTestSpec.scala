@@ -4,18 +4,18 @@ import com.babs.denegee.api.test.HackableException
 import org.scalatest.funspec.AnyFunSpecLike
 import org.scalatest.matchers.should.Matchers
 
-class BasicAckingTestSpec extends Matchers with AnyFunSpecLike {
+class BasicAckableTestSpec extends Matchers with AnyFunSpecLike {
 
   describe("When using BasicAcking") {
 
     it("should be empty if no acknowledgment or non acknowledgement") {
-      val basicAcking = BasicAcking()
+      val basicAcking = BasicAckable()
       basicAcking.getNAcknowledged shouldBe 0
       basicAcking.getAcknowledged shouldBe 0
     }
     it("should increment acknowledged store") {
 
-      val basicAck = BasicAcking()
+      val basicAck = BasicAckable()
       // One ack
       basicAck.ack
       basicAck.getAcknowledged shouldBe 1
@@ -23,7 +23,7 @@ class BasicAckingTestSpec extends Matchers with AnyFunSpecLike {
       basicAck.getAcknowledged shouldBe 2
     }
     it("should increment nonacknowledge store") {
-      val basicAck = BasicAcking()
+      val basicAck = BasicAckable()
       // One nack
       basicAck.nAck
       basicAck.getNAcknowledged shouldBe 1
@@ -35,7 +35,7 @@ class BasicAckingTestSpec extends Matchers with AnyFunSpecLike {
       basicAck.getNAcknowledged shouldBe 5
     }
     it("should increment nonacknowledge store when throwable passed") {
-      val basicAck = BasicAcking()
+      val basicAck = BasicAckable()
       val exception = HackableException
       // One ack
       basicAck.nAck
@@ -50,7 +50,7 @@ class BasicAckingTestSpec extends Matchers with AnyFunSpecLike {
 
     it("should increment acknowledge when an acknowledge strategy passed") {
 
-      val basicAck = BasicAcking()
+      val basicAck = BasicAckable()
       // One ack
       basicAck.ackWithStrategy("ack")
       basicAck.getAcknowledged shouldBe 1

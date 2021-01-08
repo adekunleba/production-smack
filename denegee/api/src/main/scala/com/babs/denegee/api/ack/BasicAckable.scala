@@ -3,19 +3,17 @@ package com.babs.denegee.api.ack
 import cats.data.State
 import com.babs.denegee.common.logging.LoggingAdapter
 
-case class BasicAcking() extends Ackable with LoggingAdapter {
+case class BasicAckable() extends Ackable with LoggingAdapter {
 
-  class AckCounter
   object AckCounter {
     // This represented as var to not make the state pure any longer for every acknowledgement
-    private[BasicAcking] var counter: State[Int, Unit] =
+    private[BasicAckable] var counter: State[Int, Unit] =
       State.pure(())
   }
 
-  class NAckCounter
   object NAckCounter {
     // This represented as var to not make the state pure any longer for every acknowledgement
-    private[BasicAcking] var counter: State[Int, Unit] =
+    private[BasicAckable] var counter: State[Int, Unit] =
       State.pure(())
   }
 
@@ -58,7 +56,7 @@ case class BasicAcking() extends Ackable with LoggingAdapter {
     NotAcknowledge
   }
 
-  def getAcknowledged: Int = AckCounter.counter.runEmpty.value._1
+  override def getAcknowledged: Int = AckCounter.counter.runEmpty.value._1
 
-  def getNAcknowledged: Int = NAckCounter.counter.runEmpty.value._1
+  override def getNAcknowledged: Int = NAckCounter.counter.runEmpty.value._1
 }

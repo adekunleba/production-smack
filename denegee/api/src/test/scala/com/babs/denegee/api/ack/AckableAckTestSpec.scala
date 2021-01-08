@@ -30,6 +30,14 @@ class AckableAckTestSpec
       val ex = HackableException
       Ackable.nAck(ex) shouldBe NotAcknowledge
     }
+
+    it("should acknowledge with `ack` strategy") {
+      Ackable.ackWithStrategy("ack") shouldBe Acknowledged
+    }
+
+    it("should not acknowledge with ull strategy") {
+      Ackable.ackWithStrategy(null) shouldBe NotAcknowledge
+    }
   }
 
 }

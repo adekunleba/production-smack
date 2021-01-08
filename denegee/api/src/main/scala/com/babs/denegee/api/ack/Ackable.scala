@@ -39,6 +39,10 @@ object Ack {
 
 trait Ackable {
 
+  def getAcknowledged: Int = 0
+
+  def getNAcknowledged: Int = 0
+
   def ack: Ack
 
   /**
