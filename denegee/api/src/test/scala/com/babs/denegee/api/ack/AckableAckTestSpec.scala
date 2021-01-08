@@ -11,7 +11,7 @@ class AckableAckTestSpec
 
   describe("When using Ackable") {
     it("should throw illegal exception when unknown ack strategy passed") {
-      intercept[IllegalArgumentException](
+      intercept[AckException](
         Ack("none").get
       )
     }
