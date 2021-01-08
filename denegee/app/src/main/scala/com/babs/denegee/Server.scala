@@ -13,14 +13,13 @@ import scala.concurrent.ExecutionContext
 object Server extends Web with App {
 
   // must be declared lazy to be used by Route traits
-  implicit protected[this] lazy val actorSystem: ActorSystem = ActorSystem(
-    "denegee")
+  implicit protected[this] lazy val actorSystem: ActorSystem = ActorSystem("denegee")
   implicit protected[this] val materializer: ActorMaterializer =
     ActorMaterializer()
   implicit protected[this] val executionContext: ExecutionContext =
     actorSystem.dispatcher
 
-  private[this] lazy val httpConfig = AppSettings(actorSystem).Http
+  private[this] lazy val httpConfig             = AppSettings(actorSystem).Http
   implicit protected[this] val timeout: Timeout = httpConfig.timeout
 
   private[this] val log = Logging(actorSystem, getClass.getName)
