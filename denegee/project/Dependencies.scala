@@ -16,6 +16,7 @@ object Dependencies {
     val config         = "1.3.3"
     val circe          = "0.9.3"
     val catCore        = "2.2.0"
+    val enumeratum     = "1.6.1"
     val googleGson     = "2.8.6"
     val logback        = "1.2.3"
     val prometheus     = "0.5.0"
@@ -71,6 +72,7 @@ object Dependencies {
   lazy val apiDependencies = commonDependencies ++ Seq(
     Name.typesafe          %% "akka-actor-typed" % Version.akka,
     Name.typesafe          %% "akka-stream"      % Version.akka,
+    "com.beachape"         %% "enumeratum"       % Version.enumeratum,
     "io.spray"             %% "spray-json"       % Version.sprayJson,
     "com.google.code.gson" % "gson"              % Version.googleGson,
     "org.reflections"      % "reflections"       % Version.reflection
