@@ -48,5 +48,12 @@ class JobScopeInstanceSpec
       jobInstance.jobId shouldBe id
       jobInstance.jobName shouldBe jobName
     }
+
+    it("should be not return default scope instance") {
+      val id = random[String]
+      val jobName = random[String]
+      val jobInstance = JobInstanceScope(id, jobName)
+      jobInstance.defaultScopeInstance shouldBe None
+    }
   }
 }

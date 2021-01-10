@@ -42,5 +42,11 @@ class TaskScopeInstanceSpec
       val taskInstance = TaskScopeInstance(id)
       taskInstance.taskId shouldBe id
     }
+
+    it("Should be not return default scope instance") {
+      val id = random[String]
+      val taskInstance = TaskScopeInstance(id)
+      taskInstance.defaultScopeInstance shouldBe None
+    }
   }
 }

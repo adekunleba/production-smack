@@ -2,6 +2,9 @@ package com.babs.denegee.api.broker.denegee_scope
 
 import enumeratum.values.{StringEnum, StringEnumEntry}
 import cats.syntax.all._
+import com.babs.denegee.api.broker.ScopeHandler
+
+import scala.collection.immutable
 
 /**
   * manages the various job levels under the DenegeeScope
@@ -10,18 +13,9 @@ import cats.syntax.all._
   */
 sealed abstract class DenegeeScopeTypesV2(
     val value: String,
-    parent: Option[DenegeeScopeTypesV2]*
-) extends StringEnumEntry {
-  def isDefinedParent: Boolean = parent.map(_.isDefined).reduce(_ && _)
-
-  /**
-    * TODO: Thinking that maybe we should get all the parents of any parent for a
-    * given Global Scope
-    * @return
-    */
-  def scopeParent: Option[Seq[DenegeeScopeTypesV2]] =
-    if (isDefinedParent) parent.flatten.some else None
-}
+    val parent: Option[DenegeeScopeTypesV2]*
+) extends StringEnumEntry
+    with ScopeHandler[DenegeeScopeTypesV2]
 
 case object DenegeeScopeTypesV2 extends StringEnum[DenegeeScopeTypesV2] {
 
@@ -30,7 +24,7 @@ case object DenegeeScopeTypesV2 extends StringEnum[DenegeeScopeTypesV2] {
     * I don't know if this might have effect in future yet
     * hence may revisit
     */
-  val values = findValues
+  override def values: immutable.IndexedSeq[DenegeeScopeTypesV2] = findValues
 
   case object Global extends DenegeeScopeTypesV2("global", None)
   case object Instance extends DenegeeScopeTypesV2("instance", Global.some)

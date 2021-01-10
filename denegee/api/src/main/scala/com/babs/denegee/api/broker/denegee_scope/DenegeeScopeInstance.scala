@@ -1,23 +1,13 @@
 package com.babs.denegee.api.broker.denegee_scope
 
-import com.babs.denegee.api.broker.{ScopeInstanceException, SimpleScopeInstance}
-import com.babs.denegee.api.broker.iface.ScopeInstance
+import com.babs.denegee.api.broker.ScopeInstanceException
+import com.babs.denegee.api.broker.iface.{ScopeInstance, SimpleScopeInstance}
 import cats.syntax.all._
 
 /**
   * Alias for GobblinScopeInstance
   */
 trait DenegeeScopeInstance extends SimpleScopeInstance[DenegeeScopeTypesV2] {
-
-  def scopeTypesBase: DenegeeScopeTypesV2
-  def scopeIdValue: String
-
-  override def scopeType: DenegeeScopeTypesV2 = scopeTypesBase
-
-  override def scopeId: String = scopeIdValue
-
-  override def name: String =
-    scopeIdValue // Maybe they should have a better name
 
   override def rootScope: DenegeeScopeTypesV2 = DenegeeScopeTypesV2.Global
 

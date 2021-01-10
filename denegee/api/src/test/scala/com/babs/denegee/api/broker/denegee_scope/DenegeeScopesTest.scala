@@ -55,5 +55,16 @@ class DenegeeScopesTest
       instanceScope.rootScope shouldBe DenegeeScopeTypesV2.Global
       instanceScope.isLocal shouldBe false
     }
+
+    it("should return default instance informations when working with Global") {
+      val globalId = random[String]
+      val globalScope =
+        DenegeeScopeInstance(DenegeeScopeTypesV2.Global, globalId)
+      globalScope.defaultScopeInstance.isDefined shouldBe true
+      globalScope.defaultScopeInstance.get shouldBe globalScope
+      globalScope.parentScopes.isEmpty shouldBe true
+      globalScope.rootScope shouldBe DenegeeScopeTypesV2.Global
+      globalScope.isLocal shouldBe false
+    }
   }
 }
