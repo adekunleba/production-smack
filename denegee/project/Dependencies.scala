@@ -18,12 +18,14 @@ object Dependencies {
     val catCore        = "2.2.0"
     val enumeratum     = "1.6.1"
     val googleGson     = "2.8.6"
+    val hadoopVersion  = "2.7.3"
     val logback        = "1.2.3"
     val prometheus     = "0.5.0"
     val reflection     = "0.9.12"
     val scala          = "2.12.7"
     val scalaLogging   = "3.9.0"
     val scopt          = "3.7.0"
+    val scalaArm       = "2.0"
     val scalatest      = "3.1.0"
     val scalamock      = "3.6.0"
     val scalacheck     = "1.13.4"
@@ -75,7 +77,9 @@ object Dependencies {
     "com.beachape"         %% "enumeratum"       % Version.enumeratum,
     "io.spray"             %% "spray-json"       % Version.sprayJson,
     "com.google.code.gson" % "gson"              % Version.googleGson,
-    "org.reflections"      % "reflections"       % Version.reflection
+    "org.reflections"      % "reflections"       % Version.reflection,
+    "org.apache.hadoop"    % "hadoop-client"     % Version.hadoopVersion,
+    "com.jsuereth"         %% "scala-arm"        % Version.scalaArm
   )
 
 }
