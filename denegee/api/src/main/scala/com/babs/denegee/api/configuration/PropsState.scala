@@ -2,6 +2,7 @@ package com.babs.denegee.api.configuration
 
 import cats.syntax.all._
 import com.babs.denegee.api.configuration.PropsState.StateConfig
+import com.babs.denegee.common.logging.LoggingAdapter
 
 /**
   * Think about state as the holder of a State's configuration
@@ -19,7 +20,9 @@ import com.babs.denegee.api.configuration.PropsState.StateConfig
   *
   *
   */
-trait PropsState extends Serializable { self =>
+trait PropsState extends Serializable with LoggingAdapter { self =>
+
+  val propLogger = logger
 
   private case class StateManager(state: Option[InnerState])
 
@@ -27,7 +30,7 @@ trait PropsState extends Serializable { self =>
 
   type InnerState = PropsState.State
 
-  implicit class Interpreter(state: PropsState) {
+  implicit private class Interpreter(state: PropsState) {
     def run: PropsState =
       state match {
         case PropsState.AddAll(other) => {
@@ -35,6 +38,7 @@ trait PropsState extends Serializable { self =>
           self
         }
         case PropsState.AddAllP(prop) => {
+          logger.info("Running addition to data update")
           updateState(ConfigProperties.empty, prop)
           self
         }
@@ -43,22 +47,24 @@ trait PropsState extends Serializable { self =>
           self
         }
       }
-    state.run
   }
 
   def createState(
-      commonProp: PropsState.StateConfig,
-      specProps: PropsState.StateConfig
+    commonProp: PropsState.StateConfig,
+    specProps: PropsState.StateConfig
   ): PropsState = PropsState.State(commonProp, specProps)
 
   /**
     * The basic unpure part of the code
     */
   private def updateState(
-      commonPropNew: PropsState.StateConfig,
-      specPropsNew: PropsState.StateConfig
+    commonPropNew: PropsState.StateConfig,
+    specPropsNew: PropsState.StateConfig
   ): Unit = {
-    val isStateDefined = self.stateManager.state.isDefined
+    val stateCommonProps =
+      self.stateManager.state.map(_.commProps).getOrElse(ConfigProperties.empty)
+    val stateSpecProps =
+      self.stateManager.state.map(_.commProps).getOrElse(ConfigProperties.empty)
     (commonPropNew, specPropsNew) match {
       case (x, y) => {
         if (!x.isEmpty && !y.isEmpty) {
@@ -66,13 +72,13 @@ trait PropsState extends Serializable { self =>
           stateManager = self.stateManager.copy(state = updatedState.some)
         } else if (x.isEmpty && y.isEmpty) {
           () // No change is requeired
-        } else if (x.isEmpty && isStateDefined) {
+        } else if (x.isEmpty) {
           val updatedState =
-            PropsState.State(self.stateManager.state.map(_.commProps).get, y)
+            PropsState.State(stateCommonProps, y)
           stateManager = self.stateManager.copy(state = updatedState.some)
-        } else if (y.isEmpty && isStateDefined) {
+        } else if (y.isEmpty) {
           val updatedState =
-            PropsState.State(x, self.stateManager.state.map(_.specProps).get)
+            PropsState.State(x, stateSpecProps)
           stateManager = self.stateManager.copy(state = updatedState.some)
         } else {
           () // This means state is not defined hence go home
@@ -88,16 +94,16 @@ trait PropsState extends Serializable { self =>
     * @param other
     * @return
     */
-  def addAll(other: PropsState): PropsState = PropsState.AddAll(other)
+  def addAll(other: PropsState): PropsState = PropsState.AddAll(other).run
 
   /**
     * Add properties to this state should return new state
     * @param properties
     * @return
     */
-//  def addAll(properties: PropsState.StateConfig): PropsState =
-//    PropsState.AddAllP(properties.some).run
-//
+  def addAllP(properties: PropsState.StateConfig): PropsState =
+    PropsState.AddAllP(properties).run
+
 //  /**
 //    * Should add properties in another state to a current state
 //    * Should return a new State
@@ -156,7 +162,7 @@ object PropsState {
   case class AddAll(other: PropsState) extends PropsState
   case class AddAllP(properties: StateConfig) extends PropsState
   case class State(
-      commProps: StateConfig,
-      specProps: StateConfig
+    commProps: StateConfig,
+    specProps: StateConfig
   ) extends PropsState
 }
