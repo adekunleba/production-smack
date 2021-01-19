@@ -1,0 +1,14 @@
+{
+  "namespace": "com.deloard.snowplowavro",
+  "type": "record",
+  "name": "MyEventRecord",
+  "fields": [
+    { "name": "timestamp",  "type": "long" },
+    { "name": "remoteHost", "type": "string"},
+    { "name": "eventType",  "type": ["null", "string"], "default": null },
+    { "name": "location",   "type": ["null", "string"], "default": null },
+    { "name": "localPath",  "type": ["null", "string"], "default": null },
+    { "name": "q",          "type": ["null", "string"], "default": null },
+    { "name": "n",          "type": ["null", "int"],    "default": null }
+  ]
+}

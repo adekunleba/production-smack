@@ -22,3 +22,35 @@ extractData
 checkbackpressure
 persist
 persistLater
+
+A typical workflow diagram can be found [here](https://github.com/adekunleba/production-smack/issues/1#issuecomment-483330646)
+It covers how the applications that makes up the smack framework interacts.
+
+Style guide for the project at [here](http://twitter.github.io/effectivescala/)
+and [this](https://docs.scala-lang.org/style/) - main scala style guide
+
+Make reference to collection document during the project, it can be found
+[here](https://www.scala-lang.org/docu/files/collections-api/collections.html)
+
+
+Refer [here](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html) and
+[here](http://www.scala-lang.org/docu/files/collections-api/collections_40.html)
+for scala performance evaluation
+
+
+Some Applications
+Real-time calculation
+Time window analysis
+Application log analysis
+Project risk management
+Intelligent prediction
+Real-time recommendation
+
+
+
+#### LESSON LEARNT
+To run a test on a particular project in a multi module sbt project it is importatant
+to switch to the module in your interactive sbt shell with `project projectname`
+Then you can run your test with `test:testOnly *TestSuit` and for continous
+testing with code changes add `~test:testOnly *TestSuit`
+
