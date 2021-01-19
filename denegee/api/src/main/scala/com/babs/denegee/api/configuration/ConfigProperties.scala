@@ -8,7 +8,7 @@ import scala.collection.mutable
   * The reason I think I must be getting a stackoverflow with the implementation I had earlier
   * For props State may largely be due to synchronization since HashMap is synchronized by default
   */
-class ConfigProperties[K, V](props: mutable.HashMap[K, V])
+case class ConfigProperties[K, V](props: mutable.HashMap[K, V])
     extends LoggingAdapter {
   self =>
 
@@ -16,10 +16,8 @@ class ConfigProperties[K, V](props: mutable.HashMap[K, V])
 //  private lazy val defaultConfig: ConfigProperties[K, V] =
 //    ConfigProperties.empty[K, V]
 
-  def setProperty(key: K, value: V): Unit = {
+  def setProperty(key: K, value: V): Unit =
     self.props.update(key, value)
-    configLogger.warn(s"Is empty defaultConfig ${self.props.isEmpty}")
-  }
 
   def getProperty(key: K): Option[V] = self.props.get(key)
 
@@ -31,14 +29,14 @@ class ConfigProperties[K, V](props: mutable.HashMap[K, V])
         case (k, v) => self.props.update(k, v)
       })
 
-  private def getprops: mutable.HashMap[K, V] = self.props
+  def getprops: Map[K, V] = self.props.toMap
 
   def isEmpty: Boolean = self.props.isEmpty
 }
 object ConfigProperties {
 
   def apply[K, V](props: ConfigProperties[K, V]): ConfigProperties[K, V] =
-    new ConfigProperties[K, V](props.getprops)
+    new ConfigProperties[K, V](props.props)
 
   def apply[K, V](): ConfigProperties[K, V] =
     new ConfigProperties[K, V](mutable.HashMap.empty[K, V])
