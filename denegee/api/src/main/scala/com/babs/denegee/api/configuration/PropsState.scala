@@ -50,16 +50,16 @@ trait PropsState extends Serializable with LoggingAdapter { self =>
   }
 
   def createState(
-    commonProp: PropsState.StateConfig,
-    specProps: PropsState.StateConfig
+      commonProp: PropsState.StateConfig,
+      specProps: PropsState.StateConfig
   ): PropsState = PropsState.State(commonProp, specProps)
 
   /**
     * The basic unpure part of the code
     */
   private def updateState(
-    commonPropNew: PropsState.StateConfig,
-    specPropsNew: PropsState.StateConfig
+      commonPropNew: PropsState.StateConfig,
+      specPropsNew: PropsState.StateConfig
   ): Unit = {
     val stateCommonProps =
       self.stateManager.state.map(_.commProps).getOrElse(ConfigProperties.empty)
@@ -104,36 +104,6 @@ trait PropsState extends Serializable with LoggingAdapter { self =>
   def addAllP(properties: PropsState.StateConfig): PropsState =
     PropsState.AddAllP(properties).run
 
-//  /**
-//    * Should add properties in another state to a current state
-//    * Should return a new State
-//    * @param other
-//    * @return
-//    */
-//  def addAllIfNotExists(other: StateWithInterpreter): StateWithInterpreter
-//
-//  /**
-//    * Should add properties in another Properties to a current state
-//    * Should return a new State
-//    * @param other
-//    * @return
-//    */
-//  def addAllIfNotExists(other: PropertyIntepreter): StateWithInterpreter
-//
-//  /**
-//    * Override properties in current state with properties in another state
-//    * @param other
-//    * @return
-//    */
-//  def overrideWith(other: StateWithInterpreter): StateWithInterpreter
-//
-//  /**
-//    * Override properties in current property bucket with properties in another state
-//    * @param other
-//    * @return
-//    */
-//  def overrideWith(other: PropertyIntepreter): StateWithInterpreter
-
   def commonProperties: StateConfig = {
     val commonProps = self.stateManager.state.map(_.commProps)
     if (commonProps.isDefined) {
@@ -162,7 +132,7 @@ object PropsState {
   case class AddAll(other: PropsState) extends PropsState
   case class AddAllP(properties: StateConfig) extends PropsState
   case class State(
-    commProps: StateConfig,
-    specProps: StateConfig
+      commProps: StateConfig,
+      specProps: StateConfig
   ) extends PropsState
 }

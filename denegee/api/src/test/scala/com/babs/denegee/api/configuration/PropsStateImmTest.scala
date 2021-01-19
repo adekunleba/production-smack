@@ -63,6 +63,44 @@ class PropsStateImmTest extends Matchers with AnyFunSpecLike {
         mutable.HashMap("John" -> "Sure", "Salin" -> "Mike")
       )
     }
+
+    it("Should get all properties") {
+      val specProps = ConfigProperties(mutable.HashMap("John" -> "Sure"))
+      val commProps = ConfigProperties(mutable.HashMap("Salin" -> "Mike"))
+      val propState1 = PropsStateImm(specProps, commProps)
+      propState1.getProperties.isEmpty shouldBe false
+      propState1.getProperties shouldBe ConfigProperties(
+        specProps.getprops ++ commProps.getprops
+      )
+    }
+
+    it("Should add properties if not exists") {
+      val specProps = ConfigProperties(mutable.HashMap("John" -> "Sure"))
+      val commProps = ConfigProperties(mutable.HashMap("Salin" -> "Mike"))
+      val propsState1 = PropsStateImm(specProps, commProps)
+
+      val configToAdd =
+        ConfigProperties(mutable.HashMap("John" -> "Sure", "Lolu" -> "shear"))
+      val propsState2 = propsState1.addAllIfNotExists(configToAdd)
+      propsState2.getProperties.isEmpty shouldBe false
+      propsState2.getProperties shouldBe
+        ConfigProperties(
+          specProps.getprops ++ commProps.getprops ++ configToAdd.getprops)
+    }
+
+    it("Should override properties") {
+      val specProps = ConfigProperties(mutable.HashMap("John" -> "Sure"))
+      val commProps = ConfigProperties(mutable.HashMap("Salin" -> "Mike"))
+      val propsState1 = PropsStateImm(commProps, specProps)
+
+      val configToAdd =
+        ConfigProperties(mutable.HashMap("John" -> "Mandy", "Lolu" -> "shear"))
+      val propsState2 = propsState1.overrideWith(configToAdd)
+      propsState2.getProperties shouldBe ConfigProperties(
+        mutable.HashMap("John" -> "Mandy", "Salin" -> "Mike")
+      )
+    }
+
   }
 
 }

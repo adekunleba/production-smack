@@ -39,5 +39,25 @@ class ConfigPropertiesTest extends Matchers with AnyFunSpecLike {
       config1.putAll(config2)
       assert(config1.getProperty("John").isDefined)
     }
+
+    it("should be same instance of config properties on new property added") {
+      val config1 = ConfigProperties[String, String]()
+      val initialConfig = config1
+      config1.setProperty("John", "Sure")
+      assert(initialConfig.equals(config1))
+      config1.setProperty("Markel", "Mak")
+      assert(initialConfig.equals(config1))
+
+    }
+
+    it("should create configuration from Map") {
+
+      val mapConfig = Map("John" -> "sure", "Mike" -> "lema")
+      val config = ConfigProperties(mapConfig)
+      assert(config.getProperty("John").isDefined)
+      assert(config.getProperty("Mike").isDefined)
+      config.getprops shouldBe mapConfig
+    }
+
   }
 }

@@ -38,6 +38,9 @@ object ConfigProperties {
   def apply[K, V](props: ConfigProperties[K, V]): ConfigProperties[K, V] =
     new ConfigProperties[K, V](props.props)
 
+  def apply[K, V](props: Map[K, V]): ConfigProperties[K, V] =
+    new ConfigProperties(mutable.HashMap(props.toSeq: _*))
+
   def apply[K, V](): ConfigProperties[K, V] =
     new ConfigProperties[K, V](mutable.HashMap.empty[K, V])
 
