@@ -1,11 +1,16 @@
 # production-smack
 A production grade SMACK application for ingesting and processing big data
 
+
 ## Description
-The project makes use of the Spark, Mesos, Akka, Cassandra and Kafka stack to process Big data from tweets, iot, timeseries and a typical recommender system
-engine.
+The project makes use of the Spark, Mesos, Akka, Cassandra and Kafka stack to process Big data from various sources
 
 Thus, there are multiple data flows that are continously coming in and being processed together.
+
+Furthermore, the project is divided into several modules:
+- Denegee - A data ingestion module
+- ditto-sc - iot digital twin engine based on Eclipse ditto
+
 
 AIM - Is to learn as much about building such stacks, integrating diverse algorithms for data processing and learn the scala functional paradigm on a production like
 project.
@@ -23,8 +28,6 @@ checkbackpressure
 persist
 persistLater
 
-A typical workflow diagram can be found [here](https://github.com/adekunleba/production-smack/issues/1#issuecomment-483330646)
-It covers how the applications that makes up the smack framework interacts.
 
 Style guide for the project at [here](http://twitter.github.io/effectivescala/)
 and [this](https://docs.scala-lang.org/style/) - main scala style guide
@@ -38,7 +41,7 @@ Refer [here](http://www.lihaoyi.com/post/BenchmarkingScalaCollections.html) and
 for scala performance evaluation
 
 
-Some Applications
+### Some Applications
 Real-time calculation
 Time window analysis
 Application log analysis
