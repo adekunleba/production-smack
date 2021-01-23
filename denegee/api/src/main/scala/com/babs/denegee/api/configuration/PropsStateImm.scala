@@ -32,8 +32,8 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
     PropsStateImm.AddAllP(properties).run
 
   def addAllP(
-    commonProps: StateConfigImm,
-    specProps: StateConfigImm
+      commonProps: StateConfigImm,
+      specProps: StateConfigImm
   ): PropsStateImm =
     PropsStateImm.State(commonProps, specProps).run
 
@@ -56,8 +56,8 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
   }
 
   private def mixProps(
-    thisState: PropsStateImm.State,
-    thatState: PropsStateImm.State
+      thisState: PropsStateImm.State,
+      thatState: PropsStateImm.State
   ): PropsStateImm.State = {
     //Compare commong props
     val specDiff = thatState.specProps.getprops -- thisState.specProps.getprops.keySet
@@ -71,7 +71,8 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
     * Return underlying ConfigProperties
     */
   def getProperties: StateConfigImm =
-    ConfigProperties(self.specialProperties.getprops ++ self.commonProperties.getprops)
+    ConfigProperties(
+      self.specialProperties.getprops ++ self.commonProperties.getprops)
 
   /**
     * Should add properties in another Properties to a current state
@@ -108,6 +109,16 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
     PropsStateImm.Override(other).run
 
   /**
+    * Override properties in current state with properties in another state
+    * @param other
+    * @return
+    */
+  def overrideWith(other: PropsStateImm): PropsStateImm = {
+    overrideWith(other.specialProperties)
+    overrideWith(other.commonProperties)
+  }
+
+  /**
     * IMPLEMENTER
     * TODO: We can do a tail recursion on impleter thoug
     * @param state
@@ -122,7 +133,9 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
               thatProps <- other.stateConfig
               //Compare the two props
             } yield mixProps(thisProps, thatProps))
-              .getOrElse(PropsStateImm.State(other.commonProperties, other.specialProperties)) //There should be something to do here
+              .getOrElse(PropsStateImm.State(
+                other.commonProperties,
+                other.specialProperties)) //There should be something to do here
           }
           PropsStateImm(config)
         case PropsStateImm.AddAllP(prop) =>
@@ -136,9 +149,11 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
         case PropsStateImm.Override(other) =>
           val updatedConfig: PropsStateImm.State = (for {
             props <- self.stateConfig
-            commSpec = other.getprops.keySet.intersect(props.specProps.getprops.keySet)
-            commComm = other.getprops.keySet.intersect(props.commProps.getprops.keySet)
-            commons  = commSpec ++ commComm
+            commSpec = other.getprops.keySet.intersect(
+              props.specProps.getprops.keySet)
+            commComm = other.getprops.keySet.intersect(
+              props.commProps.getprops.keySet)
+            commons = commSpec ++ commComm
             //TODO: BUG - IF property in common property and you try to add
             // It discards the property -- is this the intended way??
             // It has to be explicit at least
@@ -160,14 +175,6 @@ sealed trait PropsStateImm extends Serializable with LoggingAdapter { self =>
   }
 }
 
-//
-//  /**
-//    * Override properties in current state with properties in another state
-//    * @param other
-//    * @return
-//    */
-//  def overrideWith(other: StateWithInterpreter): StateWithInterpreter
-
 object PropsStateImm {
 
   def apply(): PropsStateImm = PropsStateImmImpl(None)
@@ -175,7 +182,8 @@ object PropsStateImm {
   private def apply(someConfig: State): PropsStateImm =
     PropsStateImmImpl(someConfig.some)
 
-  def apply(commonProps: StateConfigImm, specialProps: StateConfigImm): PropsStateImm =
+  def apply(commonProps: StateConfigImm,
+            specialProps: StateConfigImm): PropsStateImm =
     PropsStateImm(State(commonProps, specialProps))
 
   type StateConfigImm = ConfigProperties[String, String]
@@ -183,8 +191,8 @@ object PropsStateImm {
   case class AddAll(other: PropsStateImm) extends PropsStateImm
   case class AddAllP(properties: StateConfigImm) extends PropsStateImm
   case class State(
-    commProps: StateConfigImm,
-    specProps: StateConfigImm
+      commProps: StateConfigImm,
+      specProps: StateConfigImm
   ) extends PropsStateImm
 
   case class Override(prop: StateConfigImm) extends PropsStateImm
@@ -196,6 +204,11 @@ object PropsStateImm {
     * the PropStateImmImple hence guarantee to have a state of its own.
     */
   final case class PropsStateImmImpl(
-    override val stateConfig: Option[PropsStateImm.State]
+      override val stateConfig: Option[PropsStateImm.State]
   ) extends PropsStateImm
 }
+
+/**
+  * This is the manager for any state outside here
+  */
+trait StateManager extends PropsStateImm
