@@ -1,10 +1,13 @@
 package com.babs.denegee.api.broker
 
 import cats.syntax.all._
+import com.babs.denegee.api.broker.iface.ScopeType
 
-trait ScopeHandler[T] {
+trait ScopeHandler[T] extends ScopeType[T] {
 
   def value: String
+
+  def handlerRootScope: T
 
   def parent: Seq[Option[T]]
 
@@ -17,4 +20,12 @@ trait ScopeHandler[T] {
     */
   def scopeParent: Option[Seq[T]] =
     if (isDefinedParent) parent.flatten.some else None
+
+  override def name: String = value
+
+  override def rootScope: T = handlerRootScope
+
+  override def parentScopes(): Iterable[T] =
+    scopeParent.getOrElse(Seq.empty)
+
 }
