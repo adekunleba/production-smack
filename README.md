@@ -15,12 +15,8 @@ Furthermore, the project is divided into several modules:
 AIM - Is to learn as much about building such stacks, integrating diverse algorithms for data processing and learn the scala functional paradigm on a production like
 project.
 
-### TODO
-Create a general operation trait for the various servers.
 
-//We are using Type class to handle this.
-Operations include:
-
+Operations can include:
 process
 getData
 extractData
@@ -42,12 +38,12 @@ for scala performance evaluation
 
 
 ### Some Applications
-Real-time calculation
-Time window analysis
-Application log analysis
-Project risk management
-Intelligent prediction
-Real-time recommendation
+- Real-time calculation
+- Time window analysis
+- Application log analysis
+- Project risk management
+- Intelligent prediction
+- Real-time recommendation
 
 
 
