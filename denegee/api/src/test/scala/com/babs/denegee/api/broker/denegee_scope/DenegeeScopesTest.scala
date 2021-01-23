@@ -19,7 +19,7 @@ class DenegeeScopesTest
 
     }
 
-    it("should throw ScopeInstanceException when crating scope of Job ") {
+    it("should throw ScopeInstanceException when creating scope of Job ") {
       val jobId = random[String]
       intercept[ScopeInstanceException](
         DenegeeScopeInstance(DenegeeScopeTypesV2.Job, jobId)
