@@ -13,8 +13,8 @@ import scala.collection.immutable
   * @param parent
   */
 sealed abstract class DenegeeScopeTypesV2(
-  val value: String,
-  val parent: Option[DenegeeScopeTypesV2]*
+    val value: String,
+    val parent: Option[DenegeeScopeTypesV2]*
 ) extends StringEnumEntry
     with ScopeHandler[DenegeeScopeTypesV2] {
   override def handlerRootScope: DenegeeScopeTypesV2 =
@@ -23,8 +23,13 @@ sealed abstract class DenegeeScopeTypesV2(
   override def isLocal: Boolean =
     DenegeeScopeTypesV2.localScopes.toSeq.contains(this)
 
-  override def defaultScopeInstance: Option[ScopeInstance[DenegeeScopeTypesV2]] =
-    if (this != DenegeeScopeTypesV2.Task) DenegeeScopeInstance(this, value).some else None
+  override def defaultScopeInstance
+    : Option[ScopeInstance[DenegeeScopeTypesV2]] =
+    this match {
+      case x if x == DenegeeScopeTypesV2.Task || x == DenegeeScopeTypesV2.Job =>
+        None
+      case _ => DenegeeScopeInstance(this, value).some
+    }
 }
 
 case object DenegeeScopeTypesV2 extends StringEnum[DenegeeScopeTypesV2] {
@@ -41,7 +46,8 @@ case object DenegeeScopeTypesV2 extends StringEnum[DenegeeScopeTypesV2] {
   case object Job extends DenegeeScopeTypesV2("job", Instance.some)
   case object Container extends DenegeeScopeTypesV2("container", Instance.some)
 
-  case object MultiTaskAttempt extends DenegeeScopeTypesV2("multiTask", Job.some, Container.some)
+  case object MultiTaskAttempt
+      extends DenegeeScopeTypesV2("multiTask", Job.some, Container.some)
   case object Task extends DenegeeScopeTypesV2("task", MultiTaskAttempt.some)
 
   def localScopes: Iterable[DenegeeScopeTypesV2] =

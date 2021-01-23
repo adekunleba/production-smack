@@ -1,25 +1,39 @@
 package com.babs.denegee.api.broker
 
+import com.babs.denegee.api.broker.iface.SimpleScopeInstance
 import org.scalatest.funspec.AnyFunSpecLike
 import org.scalatest.matchers.should.Matchers
 
 class SimpleScopeTypeSpec extends Matchers with AnyFunSpecLike {
 
+  val localScope: SimpleScopeType = SimpleScopeType.Local
+  val globalScope: SimpleScopeType = SimpleScopeType.Global
+
   describe("When using SimpleScopeType") {
 
-    it("should ensure that it evaluates if the type is local") {}
+    it("should ensure that it evaluates if the type is local") {
+      assert(
+        Seq(localScope)
+          .map(_.isLocal)
+          .reduce(_ && _)
+      )
+    }
 
-    it("should effectively return the root scope") {}
-    it("should check default scope instance") {}
+    it("should effectively return the root scope") {
+      val rootScope = Seq(localScope)
+        .map(_.handlerRootScope)
+        .toSet
 
-    it("should not give default scope instance when it is a task type") {}
-
-    it("should give scope parents when parents is available") {}
-
-    it("should not give scope parent when parents is unavailable") {}
-
-    it("should check if parent is defined for the various scope types") {}
-
-    it("should get parentscopes on being a ScopeType") {}
+      rootScope.size shouldBe 1
+      rootScope.head shouldBe SimpleScopeType.Global
+    }
+    it("should check default scope instance") {
+      val scopes =
+        Seq(localScope)
+          .flatMap(_.defaultScopeInstance)
+      scopes
+        .map(_.isInstanceOf[SimpleScopeInstance[SimpleScopeType]])
+        .reduce(_ && _) shouldBe true
+    }
   }
 }
